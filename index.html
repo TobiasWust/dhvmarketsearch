@@ -9,16 +9,49 @@
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.0-beta.12"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.1.0"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
+  <style>
+    body {
+      background: linear-gradient(110deg, #fdcd3b 60%, #ffed4b 60%);
+      display: grid;
+      max-width: 90vw;
+      margin: auto;
+      grid-gap: 1em;
+    }
+    h1, h2 {
+      font-family: 'Open Sans', sans-serif;
+      text-align: center;
+      margin: 0;
+    }
+    iframe {
+      background: white;
+      padding: 
+    }
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: 2em;
+      font-weight: 800;
+    }
+    form, form input
+    {
+      font-family: 'Open Sans', sans-serif;
+        font-size:1em;
+    }
+  </style>
 </head>
 <body>
-  Search: 
-  <input id="filter">
-  <input id="from" type="date">
-  <input id="to" type="date">
-  <button onClick="draw()">Filter</button>
+  <h2>Search</h2>
+  <form>
+    <input id="filter" value="Ozone">
+    <input id="from" type="date">
+    <input id="to" type="date">
+    <input type="submit" value="Filter">
+  </form>
   
-  <div style="width: 90%" id="vis"></div>
-  <iframe style="width: 90%; height: 500px" src="https://www.dhv.de/db3/gebrauchtmarkt/"></iframe>
+  <div id="vis"></div>
+  <div><iframe style="width: 100%; height: 500px" src="https://www.dhv.de/db3/gebrauchtmarkt/"></iframe></div>
   
   <script>
     const $ = (selector) => document.querySelector(selector);
@@ -50,12 +83,7 @@
       };
 
       vegaEmbed('#vis', yourVlSpec, {
-          actions: {
-            export: true,
-            source: false,
-            compiled: false,
-            editor: false
-          }
+          actions: false
         }).then(({spec, view}) => {
           view.addEventListener('click', (event, item) => {
             $('iframe').src = 'https://www.dhv.de' + item.datum.link
@@ -65,8 +93,13 @@
 
     draw();
 
-    $('#to').value = moment().add(1, 'd').format('YYYY-MM-DD')
-    $('#from').value = moment().subtract(1, 'y').format('YYYY-MM-DD')
+    $('#to').value = moment().add(1, 'd').format('YYYY-MM-DD');
+    $('#from').value = moment().subtract(1, 'y').format('YYYY-MM-DD');
+
+    $('form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      draw();
+    })
   </script>
 </body>
 </html>
