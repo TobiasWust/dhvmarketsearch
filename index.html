@@ -128,7 +128,7 @@
           actions: false
         }).then(({spec, view}) => {
           view.addEventListener('click', (event, item) => {
-            $('iframe').src = 'https://www.dhv.de' + item.datum.link
+            $('iframe').src = item.datum.link
           })
         });
       };
