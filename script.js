@@ -43,3 +43,9 @@ $('#from').value = moment().subtract(1, 'y').format('YYYY-MM-DD');
 $('form').addEventListener('submit', (e) => {
   e.preventDefault();
   draw();
+});
+
+$('searchAgent').addEventListener('click', () => {
+  const email = $('email');
+  fetch('https://wustsding.de:8080/dhv/login', { email });
+});
