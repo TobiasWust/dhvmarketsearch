@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,26 +35,27 @@
       margin: 0.1em;
     }
 
-    details
-    {
-        transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        overflow: hidden;
+    details {
+      transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
     }
 
     section {
       text-align: left;
     }
 
-    h1, h2 {
+    h1,
+    h2 {
       font-family: 'Open Sans', sans-serif;
       margin: 0;
     }
+
     iframe {
       background: white;
     }
 
     iframe[src=''] {
-      display:none;
+      display: none;
     }
 
     form {
@@ -63,13 +65,15 @@
       font-size: 2em;
       font-weight: 800;
     }
-    form, form input
-    {
+
+    form,
+    form input {
       font-family: 'Open Sans', sans-serif;
-        font-size:1em;
+      font-size: 1em;
     }
   </style>
 </head>
+
 <body>
   <nav>
     <h2>Search</h2>
@@ -84,64 +88,20 @@
       </section>
     </details>
     <form>
-        <input id="filter" value="Ozone">
-        <input id="from" type="date">
-        <input id="to" type="date">
-        <input type="submit" value="Filter">
-      </form>
+      <input id="filter" value="Ozone">
+      <input id="from" type="date">
+      <input id="to" type="date">
+      <input type="submit" value="Filter">
+    </form>
   </nav>
-  
+
+  <div>
+    <input id='email'><button id="searchAgent">Suchagent</button>
+  </div>
+
   <div id="vis"></div>
   <div><iframe style="width: 100%; height: 500px" src=""></iframe></div>
   made with ♥ by <a href="https://www.tobiaswust.de">Tobias Wust</a>
-  
-  <script>
-    const $ = (selector) => document.querySelector(selector);
-
-    async function draw() {
-      const filter = document.querySelector('input').value;
-      const res = await fetch('https://wustsding.de:8080/dhv/');
-      offers = await res.json();
-      filtered = offers.filter(offer => 
-        offer.title.includes(filter)
-        && offer.date >= Date.parse($('#from').value)
-        && offer.date <= Date.parse($('#to').value)
-      );
-
-      const yourVlSpec = {
-        $schema: 'https://vega.github.io/schema/vega-lite/v2.0.json',
-        width: 'container',
-        data: { values: filtered },
-        mark: { type: 'bar' },
-        encoding: {
-          x: {field: 'date', type: 'temporal'},
-          y: {field: 'price', type: 'quantitative'},
-          tooltip: [
-            {field: 'title', type: 'nominal'},
-            {field: 'date', type: 'temporal'},
-            {field: 'price', type: 'quantitative'}
-          ],
-        }
-      };
-
-      vegaEmbed('#vis', yourVlSpec, {
-          actions: false
-        }).then(({spec, view}) => {
-          view.addEventListener('click', (event, item) => {
-            $('iframe').src = item.datum.link
-          })
-        });
-      };
-
-    draw();
-
-    $('#to').value = moment().add(1, 'd').format('YYYY-MM-DD');
-    $('#from').value = moment().subtract(1, 'y').format('YYYY-MM-DD');
-
-    $('form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      draw();
-    })
-  </script>
 </body>
+
 </html>
