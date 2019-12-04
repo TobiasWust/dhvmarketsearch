@@ -46,6 +46,14 @@ $('form').addEventListener('submit', (e) => {
 });
 
 $('#searchAgent').addEventListener('click', () => {
-  const email = $('#email');
-  fetch('https://wustsding.de:8080/dhv/login', { email });
+  const email = $('#email').value;
+  console.log('trying to post email');
+  // fetch('http://localhost:8081/login', {
+  fetch('https://wustsding.de:8080/dhv/login', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 });
