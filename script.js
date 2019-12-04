@@ -45,7 +45,7 @@ $('form').addEventListener('submit', (e) => {
   draw();
 });
 
-$('searchAgent').addEventListener('click', () => {
-  const email = $('email');
+$('#searchAgent').addEventListener('click', () => {
+  const email = $('#email');
   fetch('https://wustsding.de:8080/dhv/login', { email });
 });
